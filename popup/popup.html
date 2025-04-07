@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+  <div class="container p-4 mx-auto max-w-md">
+    <h1 class="text-xl font-bold mb-4 text-blue-800">PANW NGFW Job Stalker</h1>
+    
+    <!-- Connection Details Section (Collapsible) -->
+    <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+      <div class="flex justify-between items-center cursor-pointer" id="connection-header">
+        <h2 class="text-lg font-semibold text-gray-800">Connection Details</h2>
+        <button class="text-gray-500 focus:outline-none transform transition-transform duration-200" id="toggle-connection">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+      </div>
+      
+      <div id="connection-content" class="mt-3">
+        <div class="mb-3">
+          <label for="ip-address" class="block text-sm font-medium text-gray-700 mb-1">NGFW IP Address:</label>
+          <input type="text" id="ip-address" placeholder="Enter NGFW IP address" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        </div>
+        
+        <!-- API Key Management -->
+        <div id="api-key-display" class="hidden mb-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">API Key:</label>
+              <span id="current-api-key" class="font-mono bg-gray-200 px-2 py-1 rounded text-sm">••••••••••••••••</span>
+            </div>
+            <button id="clear-api-key" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm">Clear Key</button>
+          </div>
+        </div>
+        
+        <div id="api-key-input" class="hidden">
+          <div id="credential-section" class="mb-4 border-b border-gray-300 pb-4">
+            <p class="mb-2 text-sm text-gray-700">Enter your credentials to generate an API key:</p>
+            <div class="mb-2">
+              <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username:</label>
+              <input type="text" id="username" placeholder="Enter username" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password:</label>
+              <input type="password" id="password" placeholder="Enter password" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+            </div>
+            <button id="generate-api-key" class="w-full bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded text-sm">Generate API Key</button>
+          </div>
+          
+          <p class="mb-2 text-sm text-gray-700">Or manually enter an existing API key:</p>
+          <div class="mb-3">
+            <input type="password" id="api-key-field" placeholder="Enter your API key" class="w-full p-2 mb-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+            <button id="save-api-key" class="bg-blue-800 hover:bg-blue-900 text-white px-3 py-2 rounded text-sm">Save API Key</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Job Status Section -->
+    <div id="job-status-section" class="bg-white rounded-lg shadow-md p-4 mb-4">
+      <h2 class="text-lg font-semibold mb-3 text-gray-800">Job Status</h2>
+      
+      <div class="mb-3">
+        <div class="flex items-center space-x-2">
+          <input type="text" id="job-id" placeholder="Enter Job ID (optional)" class="flex-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+          <button id="check-specific-job" class="bg-blue-800 hover:bg-blue-900 text-white px-3 py-2 rounded text-sm whitespace-nowrap">Check This Job</button>
+        </div>
+      </div>
+      
+      <button id="check-latest-job" class="w-full bg-blue-800 hover:bg-blue-900 text-white px-3 py-3 rounded text-base font-medium mb-3">Get Latest Job Status</button>
+      
+      <div id="job-results" class="hidden mt-4 pt-3 border-t border-gray-200">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="text-md font-semibold text-gray-800">Job Information</h3>
+          <span class="text-xs text-gray-500" id="last-updated">Updated just now</span>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-2 mb-2">
+          <div>
+            <p class="text-xs text-gray-500">Job ID:</p>
+            <p id="display-job-id" class="font-mono text-sm"></p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-500">Status:</p>
+            <p id="job-status" class="font-semibold text-sm"></p>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-2 mb-2">
+          <div>
+            <p class="text-xs text-gray-500">Type:</p>
+            <p id="job-type" class="text-sm"></p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-500">Start Time:</p>
+            <p id="job-start-time" class="text-sm"></p>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <div class="flex justify-between text-xs text-gray-500 mb-1">
+            <span>Progress:</span>
+            <span id="progress-percentage">0%</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-4 mb-1">
+            <div id="progress-bar" class="bg-green-500 h-4 rounded-full w-0 transition-all duration-500"></div>
+          </div>
+        </div>
+        
+        <div class="bg-gray-50 p-2 rounded-md">
+          <p class="text-xs text-gray-500 mb-1">Details:</p>
+          <p id="job-message" class="text-sm text-gray-700 italic break-words"></p>
+        </div>
+        
+        <div class="mt-3 flex justify-end">
+          <button id="auto-refresh" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-1 rounded text-xs mr-2">Auto-refresh</button>
+          <button id="copy-job-id" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-1 rounded text-xs">Copy Job ID</button>
+        </div>
+      </div>
+    </div>
+    
+    <div id="status-message" class="rounded p-2 mt-3 hidden"></div>
+    
+    <div class="text-center text-xs text-gray-500 mt-4">
+      Job Stalker v1.0 | <a href="#" id="view-help" class="text-blue-600 hover:underline">Help</a>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

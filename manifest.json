@@ -1,0 +1,31 @@
+{
+    "manifest_version": 2,
+   "name": "PANW NGFW Job Stalker",
+   "version": "1.0",
+   "description": "Manage Palo Alto Networks NGFW API keys and monitor job status",
+   "permissions": [
+   "storage",
+   "activeTab",
+   "tabs",
+   "notifications",
+   "webRequest",
+   "webRequestBlocking",
+   "http://*/*",
+   "https://*/*"
+    ],
+   "browser_action": {
+   "default_icon": {
+   "48": "icons/icon-48.png"
+    },
+   "default_title": "PANW NGFW Job Stalker",
+   "default_popup": "popup/popup.html"
+    },
+   "icons": {
+   "48": "icons/icon-48.png",
+   "96": "icons/icon-96.png"
+    },
+   "background": {
+   "scripts": ["background.js"]
+    },
+   "content_security_policy": "script-src 'self' https://cdn.jsdelivr.net; object-src 'self'"
+   }
